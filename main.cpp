@@ -62,8 +62,7 @@ void start()
 		{
 		case OPTION1:
 			login();
-			continueLoop = false;
-			break;
+			continue;
 		case OPTION2:
 			createAccount();
 			continue;
@@ -121,8 +120,9 @@ void login()
 
 		if (logins.count(username) == 0 || logins[username].first != password)
 		{
-			std::cout << "Invalid username or password. Try again." << std::endl;
-			continue;
+			std::cout << "********LOGIN FAILED!*******" << std::endl;
+			continueLoop = false;
+			break;
 		}
 		else
 		{
