@@ -10,7 +10,7 @@ void login();
 void createAccount();
 
 // global variables
-std::map<std::string, std::string> logins; // make value be <password, balance>
+std::map<std::string, std::pair<std::string, int>> logins; // <username, <password, balance>>
 
 // global constants
 const int EXIT = 0;
@@ -68,6 +68,7 @@ void start()
 			createAccount();
 			continue;
 		case OPTION3:
+			std::cout << "Thank you for using Jess' ATM, see you next time!" << std::endl;
 			exit(EXIT);
 		default:
 			std::cout << "Invalid option, try again." << std::endl;
@@ -97,7 +98,7 @@ void createAccount()
 
 	}*/
 
-	logins[username] = password;
+	logins[username].first = password;
 
 	std::cout << "Thank you! Your account has been created." << std::endl;
 }
@@ -105,6 +106,8 @@ void createAccount()
 void login()
 {
 	int option;
+	int deposit;
+	int withdrawal;
 	bool continueLoop = true;
 	std::string username;
 	std::string password;
@@ -116,7 +119,7 @@ void login()
 		std::cout << "Please enter your password." << std::endl;
 		std::cin >> password;
 
-		if (logins.count(username) == 0 || logins[username] != password)
+		if (logins.count(username) == 0 || logins[username].first != password)
 		{
 			std::cout << "Invalid username or password. Try again." << std::endl;
 			continue;
@@ -134,9 +137,35 @@ void login()
 		printMainMenu();
 		std::cin >> option;
 
-		/*switch (option) {
-			case OPTION1:
-
-		}*/
+		switch (option)
+		{
+		case OPTION1:
+			std::cout << "What is the amount of the deposit?" << std::endl;
+			std::cin >> deposit;
+			logins[username].second += deposit;
+			break;
+		case OPTION2:
+			std::cout << "What is the amount of the withdrawal?" << std::endl;
+			std::cin >> withdrawal;
+			if (withdrawal > logins[username].second)
+			{
+				std::cout << "You do not have sufficient funds in your account to withdraw that much." << std::endl;
+				continue;
+			}
+			logins[username].second -= withdrawal;
+			break;
+		case OPTION3:
+			std::cout << "Your balance is " << logins[username].second << std::endl;
+			break;
+		case OPTION4:
+			start();
+			continueLoop = false;
+			break;
+		case OPTION5:
+			std::cout << "Thank you for using Jess' ATM, see you next time!" << std::endl;
+			exit(EXIT);
+		default:
+			std::cout << "Invalid option, try again." << std::endl;
+		}
 	}
 }
