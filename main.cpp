@@ -134,9 +134,9 @@ void login()
 		printMainMenu();
 		std::cin >> option;
 
-		switch (option) {
+		/*switch (option) {
 			case OPTION1:
 
-		}
+		}*/
 	}
 }
