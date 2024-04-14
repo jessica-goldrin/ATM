@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <map>
+#include <limits>
 
 // function prototypes
 void printIntroMenu();
@@ -30,6 +31,13 @@ int main()
 	return 0;
 }
 
+void stdInputErrorChecking()
+{
+	std::cout << "Invalid input. Please enter a valid number." << std::endl;
+	std::cin.clear();													// Clear the fail state
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore remaining characters in input buffer
+}
+
 void printIntroMenu()
 {
 	std::cout << "1 -> Login" << std::endl;
@@ -56,7 +64,11 @@ void start()
 		std::cout << "Please select an option from the menu below." << std::endl;
 		printIntroMenu();
 
-		std::cin >> option;
+		if (!(std::cin >> option))
+		{
+			stdInputErrorChecking();
+			continue;
+		}
 
 		switch (option)
 		{
@@ -135,18 +147,28 @@ void login()
 	{
 		std::cout << "Please choose from one of the following options." << std::endl;
 		printMainMenu();
-		std::cin >> option;
+		if (!(std::cin >> option))
+		{
+			stdInputErrorChecking();
+			continue;
+		}
 
 		switch (option)
 		{
 		case OPTION1:
 			std::cout << "What is the amount of the deposit?" << std::endl;
-			std::cin >> deposit;
+			if (!(std::cin >> deposit)) {
+				stdInputErrorChecking();
+				continue;
+			}
 			logins[username].second += deposit;
 			break;
 		case OPTION2:
 			std::cout << "What is the amount of the withdrawal?" << std::endl;
-			std::cin >> withdrawal;
+			if (!(std::cin >> withdrawal)) {
+				stdInputErrorChecking();
+				continue;
+			}
 			if (withdrawal > logins[username].second)
 			{
 				std::cout << "You do not have sufficient funds in your account to withdraw that much." << std::endl;
