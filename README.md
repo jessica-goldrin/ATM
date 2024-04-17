@@ -1,3 +1,5 @@
+This is still a work in progress, feel free to check out what I have so far!
+
 To compile:\
 ```g++ main.cpp -o atm```\
 To run:\
